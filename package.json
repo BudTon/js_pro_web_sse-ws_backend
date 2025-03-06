@@ -1,0 +1,29 @@
+{
+  "name": "ahj",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "forever server.js",
+    "watch": "forever -w server.js"
+  },
+  "author": "budton",
+  "license": "ISC",
+  "dependencies": {
+    "forever": "^4.0.3",
+    "http-event-stream": "^0.2.0",
+    "koa": "^2.15.3",
+    "koa-body": "^6.0.1",
+    "koa-combine-routers": "^4.0.2",
+    "koa-router": "^8.0.8",
+    "koa-static": "^5.0.0",
+    "uuid": "^8.3.2",
+    "uuidv4": "^6.2.13",
+    "ws": "^7.2.3"
+  },
+  "engines": {
+    "node": "20.15.1"
+  },
+  "keywords": [],
+  "description": ""
+}
