@@ -4,49 +4,19 @@ const { koaBody } = require('koa-body');
 const WS = require('ws');
 const router = require('./routes/index.js');
 const app = new Koa();
+const cors = require('@koa/cors');
+
 
 app.use(koaBody({
   urlencoded: true,
 }))
 
-app.use(async (ctx, next) => {
-  const origin = ctx.request.get('Origin');
-  if (!origin) {
-    return await next();
-  }
-
-
-  const headers = { 'Access-Control-Allow-Origin': '*', };
-
-  if (ctx.request.method !== 'OPTIONS') {
-    ctx.response.set({ ...headers });
-    try {
-      return await next();
-    } catch (e) {
-      e.headers = { ...e.headers, ...headers };
-      throw e;
-    }
-  }
-
-  if (ctx.request.get('Access-Control-Request-Method')) {
-    ctx.response.set({
-      ...headers,
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH',
-    });
-
-    if (ctx.request.get('Access-Control-Request-Headers')) {
-      ctx.response.set('Access-Control-Allow-Headers', ctx.request.get('Access-Control-Request-Headers'));
-    }
-
-    ctx.response.status = 204;
-  }
-});
-
+app.use(cors());
 
 //TODO: write code here
 app.use(router())
 
-const port = process.env.PORT || 7071;
+const port = process.env.PORT || 7077;
 const server = http.createServer(app.callback());
 
 const wsServer = new WS.Server({
@@ -69,7 +39,10 @@ wsServer.on('connection', (ws) => {
 
       Array.from(wsServer.clients)
         .filter(client => client.readyState === WS.OPEN)
-        .forEach(client => client.send(participants));
+        .forEach(client => {
+          client.send(participants);
+        });
+
       return
     }
 
@@ -90,6 +63,7 @@ wsServer.on('connection', (ws) => {
   });
 
   ws.on('close', () => {
+
     participantsList.map((participant, index) => {
       if (participant === ws.nickname) {
         participantsList.splice(index, 1)
@@ -126,5 +100,3 @@ server.listen(port, (err) => {
   console.log('Server is listening to ' + port);
   console.log('hello');
 });
-
-

@@ -4,12 +4,14 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm install",
+    "dev": "nodemon server.js",
     "start": "forever server.js",
     "watch": "forever -w server.js"
   },
   "author": "budton",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^5.0.0",
     "forever": "^4.0.3",
     "http-event-stream": "^0.2.0",
     "koa": "^2.15.3",
@@ -25,5 +27,8 @@
     "node": "20.15.1"
   },
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }
